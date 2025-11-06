@@ -1,0 +1,17 @@
+services:
+  ubuntu-your_name:
+    image: "hub.devops.ehtcn.com/apollo/user-ubuntu:24.04-p4"
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "your_port:22"
+    volumes:
+      - /home/your_name:/home/your_name
+      - /data/your_name:/data/your_name
+    environment:
+      - "USER_NAME=your_name"
+      - "USER_UID=your_user_id"
+      - "USER_GID=2000"
+      - "USER_GROUP=eht"
+      - "SSH_PASSWORD=your_password"
+    command: ["/bin/bash", "-c", "/usr/local/bin/adduser.sh && /usr/sbin/sshd -D"]

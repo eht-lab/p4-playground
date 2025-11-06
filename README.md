@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://git.ehtcn.com/p4-open/p4-playground.git
+git remote add origin https://git.ehtcn.com/p4_infrastructure/p4-playground.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](http://git.ehtcn.com/p4-open/p4-playground/-/settings/integrations)
+- [ ] [Set up project integrations](http://git.ehtcn.com/p4_infrastructure/p4-playground/-/settings/integrations)
 
 ## Collaborate with your team
 

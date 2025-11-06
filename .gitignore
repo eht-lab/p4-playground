@@ -1,0 +1,14 @@
+*.patch
+*.bin
+*.itb
+*.swp
+.vscode
+*.log
+output
+test/report
+docker/apollo/docker-compose.yaml
+docker/p4/docker-compose.yaml
+__pycache__
+build
+logs
+pcaps
