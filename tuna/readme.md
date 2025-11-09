@@ -70,18 +70,12 @@ To run any example:
 
 ```bash
 # Enter simulator runtime environment
-sudo su
-source test/p4setup.bash
+git clone https://github.com/eht-lab/p4-playground.git
 
 # Navigate to an example directory
 cd tuna/app/ping
 
-# Compile the P4 program
-make build
-
-# Run the simulation
-make run
-# or
+# compile and run
 make
 ```
 

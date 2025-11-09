@@ -44,54 +44,45 @@ docker compose version
 
 ## Configuration
 
-### Step 1: Modify the docker-compose.yaml
+### Default Configuration
 
-Edit the `docker-compose.yaml` file in the p4 directory and customize the following parameters:
+The `docker-compose.yaml` file comes pre-configured with sensible defaults:
 
-- **`your_name`**: Replace with your username (used for container name and directory mapping)
-- **`your_user_id`**: Replace with your user ID (UID)
-   - Find your user ID by running:
-   ```bash
-   $ id
-   ```
-   - Use the `uid` value from the output (e.g., if output shows `uid=1000`, use `1000`)
-- **`your_group_id`**: Replace with your primary group ID (GID)
-   - Use the `gid` value from the `id` command output (e.g., if output shows `gid=1000`, use `1000`)
-- **`your_group`**: Replace with your primary group name
-   - Use the group name shown in parentheses after `gid` in the `id` command output
-   - For example, if output shows `gid=1000(username)`, use `username`
-   - Or you can also run `groups` command to see your group names
-- **`your_password`**: Replace with your desired SSH password for accessing the container
-- **`your_port`**: Replace with your desired SSH port number (e.g., `2222`, `2223`, etc.)
-   - Make sure the port is not already in use on your host system
-
-**Example Configuration:**
-
-If your `id` command shows:
-```
-uid=1000(alice) gid=1000(alice) groups=1000(alice),27(sudo),999(docker)
-```
-
-Then your `docker-compose.yaml` should look like:
 ```yaml
 services:
-  ubuntu-alice:
-    image: "jinxdh/p4-ubuntu:24.04"
+  p4-dev:
+    image: "jinxdh/p4-ubuntu:latest"
     restart: unless-stopped
     privileged: true
     ports:
       - "2222:22"
     volumes:
-      - /home/alice:/home/alice
-      - /data/alice:/data/alice
-    environment:
-      - "USER_NAME=alice"
-      - "USER_UID=1000"
-      - "USER_GID=1000"
-      - "USER_GROUP=alice"
-      - "SSH_PASSWORD=mySecurePassword123"
-    command: ["/bin/bash", "-c", "/usr/local/bin/adduser.sh && /usr/sbin/sshd -D"]
+      - /mnt:/mnt
+    command: ["/bin/bash", "-c", "echo 'p4:123' | chpasswd && /usr/sbin/sshd -D"]
 ```
+
+**Default Settings:**
+- **Container Name**: `p4-dev`
+- **Docker Image**: `jinxdh/p4-ubuntu:latest`
+- **SSH Port**: `2222` (host) → `22` (container)
+- **Default User**: `p4`
+- **Default Password**: `123`
+- **Volume Mount**: `/mnt` directory is mounted for easy file access
+
+### Optional: Customize Configuration
+
+If you need to change the SSH port (e.g., if port 2222 is already in use):
+
+1. Edit the `ports` section in `docker-compose.yaml`:
+   ```yaml
+   ports:
+     - "YOUR_PORT:22"  # Change 2222 to your preferred port
+   ```
+
+2. Optionally change the password by modifying the `command` section:
+   ```yaml
+   command: ["/bin/bash", "-c", "echo 'p4:YOUR_PASSWORD' | chpasswd && /usr/sbin/sshd -D"]
+   ```
 
 ## Docker Operations
 
@@ -132,19 +123,15 @@ sudo docker compose restart
 
 ### Method 1: SSH Access (Recommended)
 
-Once the container is running, you can SSH into it using the port you configured:
+Once the container is running, you can SSH into it using the default credentials:
 
 ```bash
-ssh your_name@localhost -p your_port
+ssh p4@localhost -p 2222
 ```
 
-**Example:**
-```bash
-# If your username is 'alice' and port is '2222'
-ssh alice@localhost -p 2222
-```
-
-When prompted, enter the password you set in the `docker-compose.yaml` file.
+**Login Credentials:**
+- **Username**: `p4`
+- **Password**: `123`
 
 **First-time SSH connection:**
 If this is your first time connecting, you'll see a message about the host's authenticity. Type `yes` to continue.
@@ -157,13 +144,11 @@ Alternatively, you can access the container directly using Docker:
 # Find your container name
 sudo docker ps
 
-# Access the container shell
-sudo docker exec -it <container_name> /bin/bash
-```
+# Access the container shell as p4 user
+sudo docker exec -it -u p4 p4-dev /bin/bash
 
-**Example:**
-```bash
-sudo docker exec -it ubuntu-alice /bin/bash
+# Or access as root if needed
+sudo docker exec -it p4-dev /bin/bash
 ```
 
 ## Troubleshooting
@@ -181,20 +166,33 @@ Check the container logs:
 sudo docker compose logs
 ```
 
-### Permission Issues
-
-If you encounter permission issues with mounted volumes, ensure:
-1. The directories specified in `volumes` exist on your host system
-2. Your `USER_UID` matches your actual user ID
-3. You have appropriate permissions for the mounted directories
-
 ## Next Steps
 
 After successfully accessing your container, you're ready to start working with P4!
 
+The container comes with **TUNA-compatible P4C compiler and BMv2** pre-installed, so you can start developing immediately without any additional setup:
+
+- **p4c-apollo-tuna**: The P4 compiler for TUNA architecture (pre-installed)
+- **BMv2 (Behavioral Model v2)**: Software switch for TUNA target (pre-installed)
+- **tunic**: TUNA NIC driver and control interface
+- **make**: Build automation for compiling and testing examples
+- Test scripts and utilities for verifying your P4 programs
+
+#### Building from Source (Optional)
+
+If you want to compile TUNA's P4C and BMv2 from source code, refer to the following repositories:
+
+- **TUNA P4C Compiler**: [https://github.com/eht-lab/behavioral-model]
+- **TUNA BMv2**: [https://github.com/eht-lab/p4c]
+
+> **Note**: Building from source is optional. The pre-installed tools are sufficient for all examples in this repository.
+
+
 ### Explore P4 Examples
 
-This repository includes hands-on P4 examples specifically designed for the TUNA architecture. We recommend starting with these practical examples:
+This repository includes hands-on P4 examples specifically designed for the TUNA architecture, We recommend
+starting with these practical examples:
+
 
 1. **[Ping (Basic Forwarding)](../tuna/app/ping)** - Your first P4 program for basic packet forwarding
 2. **[L3 Forwarding](../tuna/app/l3_forward)** - IPv4 layer 3 routing between different network segments
@@ -203,14 +201,6 @@ This repository includes hands-on P4 examples specifically designed for the TUNA
 5. **[Firewall](../tuna/app/firewall)** - Stateful packet filtering
 
 **See the [Root README](../README.md) for a complete guide to all examples with detailed descriptions.**
-
-### Development Tools
-
-Inside your container, you'll have access to:
-- **p4c-apollo-tuna**: The P4 compiler for TUNA architecture
-- **tunic**: TUNA NIC driver and control interface
-- **make**: Build automation for compiling and testing examples
-- Test scripts and utilities for verifying your P4 programs
 
 ### Learning Resources
 

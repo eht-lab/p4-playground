@@ -1,17 +1,10 @@
 services:
-  ubuntu-your_name:
-    image: "jinxdh/p4-ubuntu:24.04"
+  p4-dev:
+    image: "jinxdh/p4-ubuntu:latest"
     restart: unless-stopped
     privileged: true
     ports:
-      - "your_port:22"
+      - "2222:22"
     volumes:
-      - /home/your_name:/home/your_name
-      - /data/your_name:/data/your_name
-    environment:
-      - "USER_NAME=your_name"
-      - "USER_UID=your_user_id"
-      - "USER_GID=your_group_id"
-      - "USER_GROUP=your_group"
-      - "SSH_PASSWORD=your_password"
-    command: ["/bin/bash", "-c", "/usr/local/bin/adduser.sh && /usr/sbin/sshd -D"]
+      - /mnt:/mnt
+    command: ["/bin/bash", "-c", "echo 'p4:123' | chpasswd && /usr/sbin/sshd -D"]

@@ -4,7 +4,7 @@
 echo "Test Results" > report
 
 test_all() {
-    sudo -s << EOF
+    sudo bash << EOF
         source cmd_api.sh
         index=1
 
@@ -41,7 +41,7 @@ test_single() {
     case_name=$2
     export app_or_sample case_name
 
-    sudo -E -s << EOF
+    sudo -E bash << EOF
         source cmd_api.sh
 
         # Enter simulator environment
