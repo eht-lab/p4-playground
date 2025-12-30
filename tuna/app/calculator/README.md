@@ -155,8 +155,6 @@ table calculate {
 
 In your shell, run:
 ```bash
-sudo su
-source test/p4setup.bash
 cd tuna/app/calculator
 make
 ```
@@ -214,7 +212,6 @@ This will:
    ```bash
    make clean
    ```
-Type `deactivate` to leave p4setup environment or `exit` to leave p4setup environment and root together
 
 ## Test Scripts
 
@@ -316,5 +313,5 @@ Current implementation has some constraints:
 After mastering the calculator, explore:
 
 - **[GRE Tunnel](../tunnel)**: Learn complex header manipulation with encapsulation
-- **[Firewall](../firewall)**: Add stateful packet filtering
+- **[Firewall](../firewall)**: Add stateless packet filtering
 - Try extending the calculator with more operations (multiplication, division)

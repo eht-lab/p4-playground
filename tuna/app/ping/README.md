@@ -100,8 +100,6 @@ More complex setup with four hosts and two interconnected bridges.
 
 In your shell, run:
 ```bash
-sudo su
-source test/p4setup.bash
 cd tuna/app/ping
 make
 ```
@@ -141,7 +139,6 @@ This will:
    ```bash
    make clean
    ```
-Type `deactivate` to leave p4setup environment or `exit` to leave p4setup environment and root together
 
 **Run with Specific Topology**
 

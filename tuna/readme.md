@@ -46,12 +46,16 @@ which tuna_nic
 
 ```
 tuna/
-├── app/                    # P4 application examples
+├── app/                   # P4 application examples
 │   ├── ping/              # Basic packet forwarding
 │   ├── l3_forward/        # Layer 3 routing
 │   ├── calculator/        # Custom protocol calculator
 │   ├── tunnel/            # GRE tunneling
-│   └── firewall/          # Stateful firewall
+│   ├── firewall/          # Stateless firewall
+│   ├── ecn/               # Explicit congestion notification
+│   ├── rss/               # Receive side scaling
+│   ├── qos/               # Quality of service
+│   └── multicast/         # Multicast filtering
 └── readme.md              # This file
 ```
 
@@ -75,7 +79,12 @@ git clone https://github.com/eht-lab/p4-playground.git
 # Navigate to an example directory
 cd tuna/app/ping
 
-# compile and run
+# Compile the P4 program
+make build
+
+# Run the simulation
+make run
+# or
 make
 ```
 
@@ -119,5 +128,16 @@ Define custom protocols and perform arithmetic and logic operations in the data 
 Implement packet encapsulation and decapsulation using GRE protocol.
 
 ### 5. [Firewall](./app/firewall)
-Build a stateful firewall with MAC address blacklist filtering.
+Build a stateless firewall with MAC address blacklist filtering.
 
+### 6. [ECN](./app/ecn)
+Implements basic Explicit Congestion Notification functionality.
+
+### 7. [RSS](./app/rss)
+Implements the Receive Side Scaling feature.
+
+### 8. [QoS](./app/qos)
+Implements Quality of Service functionality.
+
+### 9. [Multicast](./app/multicast)
+Implements multicast filtering functionality.

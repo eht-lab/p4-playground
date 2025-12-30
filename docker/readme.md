@@ -190,17 +190,27 @@ If you want to compile TUNA's P4C and BMv2 from source code, refer to the follow
 
 ### Explore P4 Examples
 
-This repository includes hands-on P4 examples specifically designed for the TUNA architecture, We recommend
-starting with these practical examples:
-
+This repository includes hands-on P4 examples specifically designed for the TUNA architecture. We recommend starting with these practical examples:
 
 1. **[Ping (Basic Forwarding)](../tuna/app/ping)** - Your first P4 program for basic packet forwarding
 2. **[L3 Forwarding](../tuna/app/l3_forward)** - IPv4 layer 3 routing between different network segments
 3. **[Calculator](../tuna/app/calculator)** - Custom protocol with arithmetic and logic operations
 4. **[GRE Tunnel](../tuna/app/tunnel)** - Packet encapsulation and tunneling
-5. **[Firewall](../tuna/app/firewall)** - Stateful packet filtering
+5. **[Firewall](../tuna/app/firewall)** - Stateless packet filtering
+6. **[ECN](../tuna/app/ecn)** - Explicit congestion notification
+7. **[RSS](../tuna/app/rss)** - Receive side scaling
+8. **[QoS](../tuna/app/qos)** - Quality of service
+9. **[Multicast](../tuna/app/multicast)** - Multicast filtering
 
 **See the [Root README](../README.md) for a complete guide to all examples with detailed descriptions.**
+
+### Development Tools
+
+Inside your container, you'll have access to:
+- **p4c-apollo-tuna**: The P4 compiler for TUNA architecture
+- **tunic**: TUNA NIC driver and control interface
+- **make**: Build automation for compiling and testing examples
+- Test scripts and utilities for verifying your P4 programs
 
 ### Learning Resources
 

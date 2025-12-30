@@ -54,12 +54,32 @@ Progress to more complex protocol implementations and custom header definitions.
 - **[GRE Tunnel (Tunneling & Encapsulation)](./tuna/app/tunnel)**<br>
   <small>Master packet encapsulation and tunneling by implementing GRE (Generic Routing Encapsulation). Learn how to encapsulate private network traffic within public network packets, enabling hosts with private IPs to communicate across a public IP network through tunnel endpoints.</small>
 
-### 3. Stateful Processing & Security
+### 3. Stateless Processing & Security
 
-Explore stateful packet processing and security features.
+Explore stateless packet processing and security features.
 
-- **[Firewall (Stateful Packet Filtering)](./tuna/app/firewall)**<br>
-  <small>Implement a stateful firewall with blacklist functionality. This example demonstrates how to maintain state across packets and enforce security policies, allowing you to selectively block traffic between hosts while maintaining legitimate connections.</small>
+- **[Firewall (Stateless Packet Filtering)](./tuna/app/firewall)**<br>
+  <small>Implement a stateless firewall with blacklist functionality. This example demonstrates how to maintain state across packets and enforce security policies, allowing you to selectively block traffic between hosts while maintaining legitimate connections.</small>
+
+### 4. Quality of Service
+
+Explore traffic management and performance optimization capabilities for diverse network scenarios.
+
+- **[ECN (Explicit Congestion Notification)](./tuna/app/ecn)**<br>
+  <small>Implement congestion signaling without packet dropping by processing IPv4 ECN fields. Learn to extract 2-bit ECN markings in the P4 ingress pipeline, propagate them via metadata, and integrate with bmv2/Linux protocol stacks for queue threshold monitoring and CNP generation. This example demonstrates efficient end-to-end congestion control.</small>
+
+- **[RSS (Receive Side Scaling)](./tuna/app/rss)**<br>
+  <small>Optimize multi-core CPU utilization with traffic distribution. Implement protocol-aware hash calculations (four-tuple for UDP, two-tuple for other IPv4 traffic) in the P4 ingress pipeline, map hash values to logical queue IDs, and enable NIC modules to route packets to appropriate CPU cores. Master flow affinity and load balancing fundamentals.</small>
+
+- **[QoS (Quality of Service)](./tuna/app/qos)**<br>
+  <small>Enable differentiated traffic treatment with dual-pipeline processing. Ingress: Combine VLAN PCP and IPv4 DSCP fields for ternary table lookup to map to CoS values (icos/ocos). Egress: Use chan\_id for exact match table lookup to map to output channels (ochan). Learn to integrate with NIC modules (IPeg/VPE) for resource allocation and scheduling.</small>
+
+### 5. Multicast Transmission
+
+Implement efficient group communication and traffic filtering for multicast scenarios.
+
+- **[Multicast (Group Traffic Filtering)](./tuna/app/multicast)**<br>
+  <small>Enable authorized group traffic delivery on smart NICs. Identify multicast packets via destination MAC (01-00-5E prefix) and IPv4 (224.0.0.0/4) checks, set multicast metadata flags, and filter traffic using an IGMP-managed multicast address table. Learn to offload unwanted multicast traffic at the NIC level, reducing host CPU load and improving security.</small>
 
 ## Documentation
 
@@ -111,7 +131,11 @@ p4-playground/
 │       ├── l3_forward/ # Layer 3 routing
 │       ├── calculator/ # Custom protocol calculator
 │       ├── tunnel/     # GRE tunneling
-│       └── firewall/   # Stateful firewall
+│       ├── firewall/   # Stateless firewall
+│       ├── ecn/        # Explicit congestion notification
+│       ├── rss/        # Receive side scaling
+│       ├── qos/        # Quality of service
+│       └── multicast/  # Multicast filtering
 ├── test/               # Test utilities and scripts
 └── utils/              # Helper utilities
 ```

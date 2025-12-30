@@ -196,8 +196,6 @@ ICMP:     [Echo Request]
 
 In your shell, run:
 ```bash
-sudo su
-source test/p4setup.bash
 cd tuna/app/tunnel
 make
 ```
@@ -231,7 +229,6 @@ This will:
    ```bash
    make clean
    ```
-Type `deactivate` to leave p4setup environment or `exit` to leave p4setup environment and root together
 
 ## Expected Results
 
@@ -321,6 +318,6 @@ Consider adding:
 
 After mastering GRE tunneling, explore:
 
-- **[Firewall](../firewall)**: Add security with stateful packet filtering
+- **[Firewall](../firewall)**: Add security with stateless packet filtering
 - Try implementing other tunneling protocols (VXLAN, IPinIP)
 - Add encryption to the tunnel (requires external libraries)

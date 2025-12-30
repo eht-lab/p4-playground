@@ -21,6 +21,13 @@
 
 ### Usage
 
+#### Dispaly usage
+
+```bash
+# Display usage for test.sh
+./test.sh help
+```
+
 #### Run all test cases (default behavior)
 
 ```bash

@@ -11,6 +11,8 @@ test() {
     # topology1: The NICs of two hosts on the same network segment are directly connected
     print_info "testing topology1.json..."
     log_file="${test_name}_topo1.log"
+    rm -f *.log >/dev/null 2>&1
+    make clean >/dev/null 2>&1 || true
     {
         make TOPO=topology1.json << EOF
         h1 ping h2 -c 2 -W 5
@@ -65,6 +67,7 @@ EOF
 
     if [ $result -eq 0 ]; then
         print_info "${test_name} test passed"
+        echo "P4 Test Success." > ping.log
         return 0
     else
         print_error "${test_name} test failed"

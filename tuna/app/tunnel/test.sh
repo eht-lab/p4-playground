@@ -11,7 +11,8 @@ test() {
     # topology1: The NICs of two hosts on the same network segment are directly connected
     #            The host is configured with a private network IP and connects via a public network IP through its NIC
     log_file="${test_name}.log"
-    rm pcaps/*.txt | true
+    rm -f *.log >/dev/null 2>&1
+    make clean >/dev/null 2>&1 || true
     {
         make << EOF
         h1 ping h2 -c 2 -W 5
@@ -20,10 +21,10 @@ EOF
         make stop
     } > "$log_file" 2>&1
     check_log_result "$log_file" "2 packets transmitted, 2 received" "h1 ping h2" || result=1
-    check_log_result "./logs/n1.log" "Deparsing header 'innerIpv4'" "encap ipv4" 4 || result=1
-    check_log_result "./logs/n1.log" "Deparsing header 'gre'" "encap gre" 2 || result=1
-    check_log_result "./logs/n2.log" "Deparsing header 'ipv4'" "decap ipv4" 2 || result=1
-    check_log_result "./logs/n2.log" "Deparsing header 'gre'" "decap gre" 2 || result=1
+    check_log_result "logs/n1.log" "Deparsing header 'innerIpv4'" "encap ipv4" 4 || result=1
+    check_log_result "logs/n1.log" "Deparsing header 'gre'" "encap gre" 2 || result=1
+    check_log_result "logs/n2.log" "Deparsing header 'ipv4'" "decap ipv4" 2 || result=1
+    check_log_result "logs/n2.log" "Deparsing header 'gre'" "decap gre" 2 || result=1
 
     # pcap: h1 to n1
     pcap_name="pcaps/n1-eth1_in"
@@ -40,6 +41,7 @@ EOF
 
     if [ $result -eq 0 ]; then
         print_info "${test_name} test passed"
+        echo "P4 Test Success." >> "$log_file"
         return 0
     else
         print_error "${test_name} test failed"

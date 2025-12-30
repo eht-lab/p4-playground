@@ -28,7 +28,7 @@ The P4 program implements:
 ## Network Topology
 
 ```
-Host A (192.168.1.3/24)          Host B (10.0.1.2/24)
+Host 1 (192.168.1.3/24)          Host 2 (10.0.1.2/24)
         │                                │
         │                                │
    ┌────┴────┐                      ┌────┴────┐
@@ -39,12 +39,12 @@ Host A (192.168.1.3/24)          Host B (10.0.1.2/24)
 
 **Configuration Details:**
 
-- **Host A**:
+- **Host 1**:
   - IP: 192.168.1.3/24
   - Gateway: 192.168.1.10 (virtual gateway handled by NIC)
   - Gateway MAC: c2:0c:20:4a:23:65
 
-- **Host B**:
+- **Host 2**:
   - IP: 10.0.1.2/24
   - Gateway: 10.0.1.10 (virtual gateway handled by NIC)
   - Gateway MAC: 62:9b:0c:db:ac:20
@@ -97,8 +97,6 @@ The routing decision is made in the egress pipeline, which is typical for NIC-ba
 
 In your shell, run:
 ```bash
-sudo su
-source test/p4setup.bash
 cd tuna/app/l3_forward
 make
 ```
@@ -138,15 +136,14 @@ This will:
    ```bash
    make clean
    ```
-Type `deactivate` to leave p4setup environment or `exit` to leave p4setup environment and root together
 
 ## Understanding the Routing Logic
 
-### Packet Flow from Host A to Host B
+### Packet Flow from Host 1 to Host 2
 
-1. **Host A generates packet**:
+1. **Host 1 generates packet**:
    - Src IP: 192.168.1.3, Dst IP: 10.0.1.2
-   - Src MAC: Host A's MAC, Dst MAC: Gateway MAC (c2:0c:20:4a:23:65)
+   - Src MAC: Host 2's MAC, Dst MAC: Gateway MAC (c2:0c:20:4a:23:65)
 
 2. **NIC 1 receives packet** (Ingress):
    - Parses headers but no processing
@@ -158,8 +155,8 @@ Type `deactivate` to leave p4setup environment or `exit` to leave p4setup enviro
 
 4. **Packet forwarded to NIC 2**
 
-5. **NIC 2 forwards to Host B**:
-   - Host B receives packet with correct destination MAC
+5. **NIC 2 forwards to Host 2**:
+   - Host 2 receives packet with correct destination MAC
 
 ## Key Concepts
 
@@ -183,4 +180,4 @@ After mastering L3 forwarding, explore:
 
 - **[Calculator](../calculator)**: Define custom protocols and perform in-network computations
 - **[GRE Tunnel](../tunnel)**: Learn packet encapsulation and tunneling
-- **[Firewall](../firewall)**: Add stateful packet filtering
+- **[Firewall](../firewall)**: Add stateless packet filtering

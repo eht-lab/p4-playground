@@ -39,7 +39,7 @@ run:
 	sudo PATH="$$PATH" ${P4_EXTRA_SUDO_OPTS} python3 $(RUN_SCRIPT) $(run_args);
 
 stop:
-	@-mn_path=$$(which mn 2>/dev/null); \
+	@mn_path=$$(which mn 2>/dev/null); \
 	if [ -n "$$mn_path" ]; then \
 		sudo PATH="$$PATH" "$$mn_path" -c; \
 	fi

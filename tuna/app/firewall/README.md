@@ -1,8 +1,8 @@
-# Firewall - Stateful Packet Filtering
+# Firewall - Stateless Packet Filtering
 
 ## Overview
 
-This example implements a basic stateful firewall using P4, demonstrating packet filtering based on source MAC addresses. The firewall maintains a blacklist table and drops packets from blocked sources, while allowing all other traffic to pass through.
+This example implements a basic stateless firewall using P4, demonstrating packet filtering based on source MAC addresses. The firewall maintains a blacklist table and drops packets from blocked sources, while allowing all other traffic to pass through.
 
 This example introduces security concepts in P4 programming and shows how to implement access control in the data plane.
 
@@ -130,8 +130,6 @@ Filtering in ingress is efficient as it prevents blocked packets from consuming 
 
 In your shell, run:
 ```bash
-sudo su
-source test/p4setup.bash
 cd tuna/app/firewall
 make
 ```
@@ -186,7 +184,6 @@ This will:
    ```bash
    make clean
    ```
-Type `deactivate` to leave p4setup environment or `exit` to leave p4setup environment and root together
 
 ## Expected Results
 
@@ -314,6 +311,7 @@ action drop_and_log() {
 
 After understanding basic firewall implementation:
 
+- **[ECN](../ecn)**: Allow end-to-end notification of network congestion without dropping packets
 - Try adding IP-based filtering rules
 - Implement a whitelist instead of blacklist
 - Add TCP/UDP header parsing and port filtering
